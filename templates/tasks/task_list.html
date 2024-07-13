@@ -1,0 +1,26 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>Task List</h2>
+
+  <ul class="list-group">
+    {% for task in tasks %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a> -
+          {% if task.completed %}
+            <span class="badge badge-success">Completed</span>
+          {% else %}
+            <span class="badge badge-warning">In Progress</span>
+          {% endif %}
+        </div>
+        <div>
+          <a href="{% url 'task_edit' task.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+          <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <br/><br/>
+  <a href="{% url 'task_create' %}" class="btn btn-primary mb-3">Create a New Task</a>
+{% endblock %}

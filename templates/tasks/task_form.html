@@ -1,0 +1,55 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2 class="my-4">{% if form.instance.pk %}Edit{% else %}New{% endif %} Task</h2>
+  <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_title">Title</label>
+      <input type="text" class="form-control {% if form.title.errors %}is-invalid{% endif %}" id="id_title" name="title" value="{{ form.title.value|default_if_none:'' }}" required>
+      <div class="invalid-feedback">
+        {% for error in form.title.errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="id_description">Description</label>
+      <textarea class="form-control {% if form.description.errors %}is-invalid{% endif %}" id="id_description" name="description" rows="5" required>{{ form.description.value|default_if_none:'' }}</textarea>
+      <div class="invalid-feedback">
+        {% for error in form.description.errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="id_time_limit">Time limit</label>
+      <input type="text" class="form-control {% if form.time_limit.errors %}is-invalid{% endif %}" id="id_time_limit" name="time_limit" value="{{ form.time_limit.value|default_if_none:'08:00:00' }}" required>
+      <div class="invalid-feedback">
+        {% for error in form.time_limit.errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}
+
+<script>
+  // Bootstrap custom validation script
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>

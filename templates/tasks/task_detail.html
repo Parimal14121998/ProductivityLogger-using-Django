@@ -1,0 +1,41 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <p><strong>Title:</strong>  {{ task.title }}</p>
+  <p><strong>Description:</strong> {{ task.description }}</p>
+  <p><strong>Time Limit:</strong> {{ task.time_limit }}</p>
+  <p><strong>Time Exceeded:</strong> {{ task.time_exceeded }}</p>
+  <p><strong>Completed:</strong> {{ task.completed }}</p>
+
+  <h3>Work Sessions</h3>
+  <ul>
+    {% for session in task.work_sessions.all %}
+      <li>Start: {{ session.start_time }}
+      {% if session.end_time %}
+        | End: {{ session.end_time }}
+        | Duration: {{ session.duration }}
+      {% else %}
+        | <form method="post" action="{% url 'task_end_session' task.pk session.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">End Session</button>
+          </form>
+      {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if not task.completed %}
+    <form method="post" action="{% url 'task_start_session' task.pk %}" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Start New Session</button>
+    </form>
+  {% endif %}
+
+  <form method="post" action="{% url 'task_complete' task.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" style="margin-left:10px;">Complete Task</button>
+  </form>
+
+  <br><br>
+  <a href="{% url 'task_list' %}" class="btn btn-secondary">Back to Task List</a>
+{% endblock %}

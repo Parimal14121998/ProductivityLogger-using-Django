@@ -1,0 +1,10 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>End Work Session for {{ task.title }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">End Session</button>
+  </form>
+  <a href="{% url 'task_detail' task.pk %}">Back to Task Detail</a>
+{% endblock %}

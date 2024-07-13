@@ -1,0 +1,11 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>Complete Task</h2>
+  <p>Are you sure you want to complete this task?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Complete Task</button>
+  </form>
+  <a href="{% url 'task_detail' task.pk %}">Back to Task Detail</a>
+{% endblock %}
